@@ -1,5 +1,7 @@
 import React from 'react';
 import{View,Text} from 'react-native';
+import Header from '../../Components/Header'
+import { Container} from './styles'
 
 
 export default function Movies(){
@@ -7,11 +9,11 @@ export default function Movies(){
 return(
 
 
-        <View>
+    <Container>
         
-            <Text> MEUS FILMES</Text>
+            <Header   title = "Meus Filmes "/>
         
-        </View>
+            </Container>
 
 
 );

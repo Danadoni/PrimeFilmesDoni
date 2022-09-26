@@ -1,17 +1,18 @@
 import React from 'react';
-import{View,Text} from 'react-native';
-
+import {View,Text} from 'react-native';
+import {Container} from './styles'
+import Header from '../../Components/Header'
 
 export default function Home(){
 
 return(
 
 
-        <View>
+        <Container>
         
-            <Text> HOME</Text>
+            <Header title = "Prime Video "/>
         
-        </View>
+            </Container>
 
 
 );
