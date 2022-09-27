@@ -2,12 +2,21 @@ import React from 'react'
 import {View,Text} from 'react-native'
 import {BannerItem,Container,Title,RateContainer,Rate} from './styles'
 import {Ionicons} from '@expo/vector-icons';
-
+import { useNavigation } from '@react-navigation/native';
 
 export default function SliderItem ({data}){
+const navigation = useNavigation();
+
+
+    function goDetails(item){
+
+        navigation.navigate('details',{filme:item});
+
+    }
+
 
     return(
-       <Container activeOpacity = {0.7}>
+       <Container activeOpacity = {0.7} onPress ={()=> goDetails(data)}>
         <BannerItem 
         
         source = {{uri : `https://image.tmdb.org/t/p/original/${data.poster_path}`}}

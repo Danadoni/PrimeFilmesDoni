@@ -15,6 +15,7 @@ import Header from '../../Components/Header'
 import SliderItem from '../../Components/SliderItem';
 import {Feather} from '@expo/vector-icons';
 import { getListMovies,randomBanner } from '../../utils/movies';
+import { useNavigation } from '@react-navigation/native';
 export default function Home(){
 
 const [nowMovies,setNowMovies] = useState([]);
@@ -95,6 +96,14 @@ useEffect( () =>{
 
 },[])
 
+
+const navigation = useNavigation();
+function goDetails(item){
+    navigation.navigate('details',{filme : item.bannerMovie});
+}
+
+
+
 if(loading){
     return (
         <Container>
@@ -122,7 +131,7 @@ return(
             <ScrollView  showsVerticalScrollIndicator={false} >
                 <Title >Em Cartaz</Title>
 
-                <BannerButton >
+                <BannerButton  onPress ={() => goDetails({bannerMovie})}>
                     <Banner 
                     resizeMethod="resize"
                     source = {{ uri: `https://image.tmdb.org/t/p/original/${bannerMovie.poster_path}`}}
