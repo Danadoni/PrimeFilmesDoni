@@ -9,3 +9,8 @@ export function getListMovies(size,movies){
 return popularMovies;
 }
 
+// gerar um número aleatório para servir como capa do aplicativo baseado na lista de filmes 
+
+export function randomBanner(movies){
+    return Math.floor(Math.random()* movies.length )
+}

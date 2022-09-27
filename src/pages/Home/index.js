@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView,ActivityIndicator } from 'react-native';
 import {
     Container,
     SearchContainer,
@@ -14,17 +14,21 @@ import api,{key} from '../../services/api'
 import Header from '../../Components/Header'
 import SliderItem from '../../Components/SliderItem';
 import {Feather} from '@expo/vector-icons';
-import { getListMovies } from '../../utils/movies';
+import { getListMovies,randomBanner } from '../../utils/movies';
 export default function Home(){
 
 const [nowMovies,setNowMovies] = useState([]);
 const [popular,setPopular] = useState([]);
+const[bannerMovie,setBannerMovie] = useState({});
 const [topMovies,setTopMovies] = useState([]);
+const[loading,setLoading] = useState(true);
 
 
 useEffect( () =>{
 
     let isActive = true;
+
+    const ac = new AbortController();
 
     async function getMovies(){
 
@@ -62,20 +66,45 @@ useEffect( () =>{
 
         ])
         
+        if(isActive){
+            const nowList = getListMovies(10,nowData.data.results);
+            const popularList = getListMovies(6,popularData.data.results);
+            const topList = getListMovies(10,topData.data.results);
+            
+            
+            setBannerMovie(nowData.data.results[randomBanner(nowList)]);
+    
+            setNowMovies(nowList)
+            setPopular(popularList)
+            setTopMovies(topList)
+    
+            setLoading(false);
+        }
 
-        const nowList = getListMovies(10,nowData.data.results);
-        const popularList = getListMovies(6,popularData.data.results);
-        const topList = getListMovies(10,topData.data.results);
-
-
-        setNowMovies(nowList)
-        setPopular(popularList)
-        setTopMovies(topList)
+       
     }
 
     getMovies();
 
+// cancela as requisições caso seja feita uma troca de tela, afim de melhora a perfomace do app e não desperdiçar memoria
+    return() => {
+        isActive = false;
+        ac.abort();
+    }
+
+
 },[])
+
+if(loading){
+    return (
+        <Container>
+
+            <ActivityIndicator size= 'large' color="#fff"/>
+
+        </Container>
+    )
+}
+
 
 return(
 
@@ -96,7 +125,7 @@ return(
                 <BannerButton >
                     <Banner 
                     resizeMethod="resize"
-                    source = {{ uri: 'https://sm.ign.com/t/ign_pt/screenshot/default/capa_b14y.1080.jpg'}}
+                    source = {{ uri: `https://image.tmdb.org/t/p/original/${bannerMovie.poster_path}`}}
                     />
                 </BannerButton>
             <SliderMovie
