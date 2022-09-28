@@ -50,7 +50,7 @@ useEffect( () =>{
                         page:1,
                     }
                  }),
-                 api.get('/movie/popular',{
+                 api.get('/trending/all/day',{
                     params:{
                         api_key:key,
                         language:'pt-BR',

@@ -14,6 +14,7 @@ const navigation = useNavigation();
 
     }
 
+    // console.log(data)
 
     return(
        <Container activeOpacity = {0.7} onPress ={()=> goDetails(data)}>
@@ -23,10 +24,10 @@ const navigation = useNavigation();
         
         />
         {/* numberOflines limita o tamanho do texto para uma linha */}
-        <Title numberOfLines ={1}>{data.title} </Title>
+        <Title numberOfLines ={1}> {data.title ? data.title : data.name}  </Title>
         <RateContainer>
             <Ionicons name="md-star" size={12} color= '#e7a74e'/>
-            <Rate> {data.vote_average} </Rate>
+            <Rate> {data.vote_average.toFixed(1)} </Rate>
         </RateContainer>
        </Container>
     );
