@@ -1,27 +1,125 @@
-import React,{useState} from 'react';
-import { Container,Title,BannerItem} from './styles';
+import React,{useState,useEffect} from 'react';
+
+import { Container,Title,BannerItem, HeaderButton,Header, ButtonLink,ContentArea,Rate,ListGenres,Description} from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import {Feather, Ionicons} from '@expo/vector-icons';
+import api,{key} from '../../services/api'
+import Stars from 'react-native-stars';
+import Genres from '../../Components/Genres'
+import ModalLink from '../../Components/ModalLink'
+import { ScrollView,Modal } from 'react-native';
 
 export default function Details(){
     const route = useRoute();
+    const navigation = useNavigation();
+    const [movie,setMovie] = useState(['']);
+    const [openLink,SetOpenLink] = useState(false);
 
-    const [movie,setMovie] = useState(route.params.filme);
+    useEffect(()=> {
 
+        async function getMovies(){
+            const response = await api.get(`/movie/${route.params.filme.id}`,{
+                params:{
+                    api_key:key,
+                    language: 'pt-BR'
+                }
 
-//    console.log(movie)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+      
+           
+            console.log(response.data)
+            setMovie(response.data);
+               
+      
+        }
+
+        getMovies();   
+
+    },[])
+
+    
+
+    
     
 return(
 
     <Container>
+        <BannerItem
+        resizeMethod ="resize"
+        source = {{ uri: `https://image.tmdb.org/t/p/original/${movie.poster_path}`}}
+        />
+      <Header style = {{alignItems:'center'}}>
 
-        <BannerItem 
-        resizeMode="cover"
-        source = {{uri : `https://image.tmdb.org/t/p/original/${movie.poster_path}`}}
+        <HeaderButton onPress = {() => navigation.goBack()}>
+        <Feather name ='arrow-left' size={28} color='#FFF'/>  
+        </HeaderButton>
+        <HeaderButton>    
+        <Ionicons name ="bookmark" size={28} color ='#fff'/>    
+        </HeaderButton>
+     
+      </Header>
+      
+        
+
+
+
+        <ButtonLink onPress = {() => SetOpenLink(true)} >
+        <Feather name='link' size={24} color ='#fff'/> 
+
+        </ButtonLink>
+        
+
+        <Title>{movie.title} </Title>
+
+
+
+
+
+
+        <ContentArea>
+            <Stars
+            disable = {true}
+            default = {movie.vote_average}
+            count = {10}
+            half = {true}
+            starSize ={20}
+            fullStar = {<Ionicons name='md-star' size={24} color='#E7A74e'/>}
+            emptyStar = {<Ionicons name='md-star-outline' size={24} color='#E7A74e'/>}
+            halfStar = {<Ionicons name='md-star-half' size={24} color='#E7A74e'/>}
+           
+    
+            />
+            <Rate>{ parseFloat(movie.vote_average).toFixed(1)}/10 </Rate>
+        </ContentArea>
+       
+        <ListGenres
+        data = {movie?.genres}
+        horizontal = {true}
+        showsHorizontalScrollIndicator = {false}
+        keyExtractor = { (item) => String(item.id)}
+        renderItem = { ({item} ) => <Genres data = {item} ></Genres>}
+        />
+        <Title> Sinopsess </Title>
+        <ScrollView showsVerticalScrollIndicator={false}>
+            
+            <Description> {movie.overview}</Description>
+
+
+        </ScrollView>
+
+        <Modal animationType='slide'  visible={openLink}>
+
+        <ModalLink
+        link = {'google.com.br'}
+        title = {movie?.title}
+        closeModal = { () => SetOpenLink(false)}
         
         />
 
-        <Title> {movie.title} </Title>
-    
+        </Modal>
 
     </Container> 
 

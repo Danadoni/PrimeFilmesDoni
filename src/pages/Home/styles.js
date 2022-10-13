@@ -65,3 +65,4 @@ export const SliderMovie = styled.FlatList `
 
 
 `;
+
