@@ -17,7 +17,7 @@ export default function Search(){
 
         async function getSearchMovie(){
 
-            const response = await api.get(`/search/movie/`,{
+            const response = await api.get(`/search/multi/`,{
                 params:{
                     query:route.params.name,
                     api_key:key,

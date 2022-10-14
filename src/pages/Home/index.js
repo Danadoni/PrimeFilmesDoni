@@ -80,6 +80,7 @@ useEffect( () =>{
     
             setNowMovies(nowList)
             setPopular(popularList)
+            console.log(popularList)
             setTopMovies(topList)
     
             setLoading(false);

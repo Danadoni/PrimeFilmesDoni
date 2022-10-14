@@ -14,11 +14,12 @@ export default function Details(){
     const navigation = useNavigation();
     const [movie,setMovie] = useState(['']);
     const [openLink,SetOpenLink] = useState(false);
-
+    const[type,SetType] = useState(route.params.filme.media_type)
     useEffect(()=> {
 
         async function getMovies(){
-            const response = await api.get(`/movie/${route.params.filme.id}`,{
+           
+            const response = await api.get(`/${type}/${route.params.filme.id}`,{
                 params:{
                     api_key:key,
                     language: 'pt-BR'
@@ -71,9 +72,11 @@ return(
 
         </ButtonLink>
         
-
+        {type =='movie'?(
         <Title>{movie.title} </Title>
-
+        ) : (
+            <Title>{movie.name} </Title>
+        )}
 
 
 
