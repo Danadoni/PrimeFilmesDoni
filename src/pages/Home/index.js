@@ -16,6 +16,7 @@ import SliderItem from '../../Components/SliderItem';
 import {Feather} from '@expo/vector-icons';
 import { getListMovies,randomBanner } from '../../utils/movies';
 import { useNavigation } from '@react-navigation/native';
+import Search from '../Search';
 export default function Home(){
 
 const [nowMovies,setNowMovies] = useState([]);
@@ -23,6 +24,8 @@ const [popular,setPopular] = useState([]);
 const[bannerMovie,setBannerMovie] = useState({});
 const [topMovies,setTopMovies] = useState([]);
 const[loading,setLoading] = useState(true);
+// imput do pesquisar 
+const[input,setInput]= useState('');
 
 
 useEffect( () =>{
@@ -114,6 +117,13 @@ if(loading){
     )
 }
 
+function buscarFilme(){
+    if(input === '') return;
+
+    navigation.navigate('search',{name : input})
+
+    setInput('')
+}
 
 return(
 
@@ -123,8 +133,12 @@ return(
             <Header title = "Prime Video "/>
             <SearchContainer>
 
-                <Input placeholder = "Ex Cyberpunk 2077" placeholderTextColor = "#ddd"/>
-            <SearchButton>
+                <Input placeholder = "Ex Cyberpunk 2077" 
+                placeholderTextColor = "#ddd" 
+                value= {input}
+                onChangeText = {(texto) => setInput(texto)}
+                />
+            <SearchButton onPress = {buscarFilme}>
                 <Feather name = 'search' size={30} color ='#FFF' />
                 </SearchButton>
             </SearchContainer>
